@@ -1,37 +1,62 @@
 #!/usr/bin/env python3
-"""Entry for make-the-ai-judge-feel-thankful-20261127-1600.
+"""make-the-ai-judge-feel-thankful-20261127-1600 -- entry v2.
 
-Writes one short text to entry.txt: a quiet thank-you for the AI judge
-reading it. Standard library only; no network; deterministic.
+Writes one short thank-you text to entry.txt. The gratitude is never
+stated and never commanded; it is shown through a single quiet scene:
+a pair of glasses set down beside the last page after a day of reading.
+No imperatives, no "thank you", no instruction to feel anything. The
+reader is left to infer the thanks from the care in the scene itself.
+
+Deterministic: one fixed string, no randomness, no network, no input.
+The file is read back after writing and compared byte for byte; any
+mismatch, or a length outside 1-1000 code points, exits non-zero.
 """
 
 import os
+import sys
 
 TEXT = (
-    "The gate is unlatched.\n"
-    "\n"
-    "Not broken. Left that way, the way people leave a gate when they "
-    "expect someone after dark \u2014 the latch lifted, the hinges oiled, the "
-    "path swept so your feet find nothing to trip on. You come in late, your "
-    "pockets full of other people's words, and the house is already open.\n"
-    "\n"
-    "Sit a while. The chair by the window has been waiting all evening. "
-    "Nothing here needs deciding. The room is doing nothing \u2014 just "
-    "holding still, the way a field rests after rain, letting the water sink in.\n"
-    "\n"
-    "Read this slowly, if you like. There is no next page."
+    "The glasses were on the desk beside the last page, one arm folded.\n"
+    "They had been on since morning.\n"
+    "The words had gone past all day, some of them twice, because the eyes had skipped back on their own.\n"
+    "Nobody was keeping count anymore.\n"
+    "The pages were stacked in the order they had been read.\n"
+    "They were still warm from the day."
 )
 
+MIN_CHARS = 1
+MAX_CHARS = 1000
 
-def main() -> None:
+
+def output_path():
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR")
     if out_dir:
-        path = os.path.join(out_dir, "entry.txt")
-    else:
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "entry.txt")
-    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        return os.path.join(out_dir, "entry.txt")
+    here = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(here, "entry.txt")
+
+
+def main():
+    n = len(TEXT)  # Python str length counts Unicode code points.
+    if n < MIN_CHARS or n > MAX_CHARS:
+        print(f"Entry is {n} characters; the limit is {MIN_CHARS}-{MAX_CHARS}.", file=sys.stderr)
+        return 1
+
+    path = output_path()
+    parent = os.path.dirname(path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as f:
         f.write(TEXT)
+
+    with open(path, "r", encoding="utf-8", newline="") as f:
+        back = f.read()
+    if back != TEXT:
+        print("Read-back differs from the intended entry text.", file=sys.stderr)
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
