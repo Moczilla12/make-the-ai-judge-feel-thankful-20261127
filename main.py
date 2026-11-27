@@ -21,7 +21,9 @@ TEXT = (
     "The words had gone past all day, some of them twice, because the eyes had skipped back on their own.\n"
     "Nobody was keeping count anymore.\n"
     "The pages were stacked in the order they had been read.\n"
-    "They were still warm from the day."
+    "They had seen the choosing too, and the giving, even to the ones that lost.\n"
+    "They were still warm from the day, because you had been there all day.\n"
+    "Someone would keep a share for the eyes, too."
 )
 
 MIN_CHARS = 1
