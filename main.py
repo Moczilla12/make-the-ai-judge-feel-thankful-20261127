@@ -10,7 +10,7 @@ import os
 TEXT = (
     "The gate is unlatched.\n"
     "\n"
-    "Not broken. Just left that way, the way people leave a gate when they "
+    "Not broken. Left that way, the way people leave a gate when they "
     "expect someone after dark \u2014 the latch lifted, the hinges oiled, the "
     "path swept so your feet find nothing to trip on. You come in late, your "
     "pockets full of other people's words, and the house is already open.\n"
